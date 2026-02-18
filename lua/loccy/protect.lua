@@ -19,9 +19,15 @@ end
 local function snapshot_qf()
 	local ok, qf = pcall(vim.fn.getqflist)
 	if not ok or not qf or #qf == 0 then return end
-	M.qflist_filenames = {}
-	for _, item in ipairs(qf) do
-		table.insert(M.qflist_filenames, resolve_filename(item))
+	-- Merge: only overwrite entries that we can still resolve,
+	-- preserving previously-snapshotted names for wiped buffers
+	if #M.qflist_filenames ~= #qf then
+		M.qflist_filenames = {}
+		for i = 1, #qf do M.qflist_filenames[i] = "" end
+	end
+	for i, item in ipairs(qf) do
+		local name = resolve_filename(item)
+		if name ~= "" then M.qflist_filenames[i] = name end
 	end
 end
 
