@@ -20,5 +20,6 @@ M.track_qf = protect.track_qf
 M.remove_qf = protect.remove_qf
 M.fzf_delete_qf = fzf.delete_qf
 M.fzf_delete_loclist = fzf.delete_loclist
+M.format = commands.format
 
 return M

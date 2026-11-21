@@ -2,6 +2,23 @@ local M = {}
 
 local protect = require("loccy.protect")
 
+--- Format a quickfix/loclist entry with ANSI colors and timestamp.
+--- @param label string
+--- @param msg? string
+--- @return string
+function M.format(label, msg)
+	local green = "\27[32m"
+	local red = "\27[31m"
+	local purple = "\27[35m"
+	local reset = "\27[0m"
+	local timestamp = os.date("%H:%M:%S")
+	msg = msg or ""
+	if msg ~= "" then
+		return green .. label .. reset .. " - " .. red .. msg .. reset .. " " .. purple .. timestamp .. reset
+	end
+	return green .. label .. reset .. " " .. purple .. timestamp .. reset
+end
+
 local function prompt_and_add(opts)
 	local fzf = require("fzf-lua")
 	local current_line = vim.api.nvim_get_current_line()
@@ -38,18 +55,9 @@ local function prompt_and_add(opts)
 					if msg == "" then msg = "empty" end
 				end
 
-				local timestamp = os.date("%H:%M:%S")
 				local index_num = opts.next_index()
 				local index_str = string.format("%02d", index_num)
-
-				local red = "\27[31m"
-				local green = "\27[32m"
-				local purple = "\27[35m"
-				local reset = "\27[0m"
-
-				local colored_msg = green .. index_str .. reset
-					.. " - " .. red .. msg .. reset
-					.. " " .. purple .. timestamp .. reset
+				local colored_msg = M.format(index_str, msg)
 
 				opts.insert(owner_win, {
 					filename = full_path,

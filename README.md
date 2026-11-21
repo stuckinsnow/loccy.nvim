@@ -91,6 +91,7 @@ require("fzf-lua").setup({
 
 ## Lua API
 
+- `require("loccy").format(label, msg)` — format an entry with ANSI colors and timestamp (`<label> - <msg> HH:MM:SS`)
 - `require("loccy").track_qf(index, filename)` / `remove_qf(index)` — keep quickfix filename protection in sync with manual edits
 - `require("loccy").track_loclist(index, filename)` / `remove_loclist(index)` — keep location list filename protection in sync
 - `require("loccy").fzf_delete_qf(selected)` — `fzf-lua` delete action for quickfix
